@@ -89,6 +89,7 @@
                 <version>${checkstyle-maven-plugin.version}</version>
                 <configuration>
                     <configLocation>checkstyle.xml</configLocation>
+                    <failsOnError>false</failsOnError>
                 </configuration>
                 <executions>
                     <execution>
