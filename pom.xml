@@ -119,6 +119,7 @@
                 </configuration>
                 <executions>
                     <execution>
+                        <?m2e execute onConfiguration?>
                     <phase>validate</phase>
                     <goals>
                         <goal>${plugin.prettier.goal}</goal>
