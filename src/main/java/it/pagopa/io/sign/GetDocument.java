@@ -10,6 +10,9 @@ import com.microsoft.azure.functions.annotation.QueueTrigger;
 import it.pagopa.io.sign.azure.blobStorage.BlobStorageClient;
 import it.pagopa.io.sign.azure.blobStorage.BlobStorageConfig;
 import it.pagopa.io.sign.model.Document;
+import it.pagopa.io.sign.model.FileTBS;
+import it.pagopa.io.sign.utility.FileUtility;
+import java.nio.file.Path;
 import java.util.logging.Logger;
 
 public class GetDocument {
@@ -35,17 +38,23 @@ public class GetDocument {
         throw new JsonSyntaxException("json parameters is null");
       }
 
+      String fileName = document.getName();
+
       BlobContainerClient containerClient = BlobStorageClient.createContainerClient(
         storageConfig.connectionString,
         storageConfig.issuerBlobContainerName
       );
-      BlobClient selectedBlob = BlobStorageClient.selectBlob(
-        containerClient,
-        document.getName()
-      );
+      BlobClient selectedBlob = BlobStorageClient.selectBlob(containerClient, fileName);
 
       if (BlobStorageClient.blobExist(selectedBlob)) {
-        logger.info("File exist: " + document.getName());
+        logger.info("File exist: " + selectedBlob.getBlobUrl());
+
+        Path tempFile = FileUtility.generateTempPath(fileName);
+        selectedBlob.downloadToFile(tempFile.toString());
+
+        FileTBS fileTbs = new FileTBS(tempFile.toFile());
+
+        logger.info("URL: " + tempFile.toString());
       } else {
         logger.warning("File not found: " + document.getName());
       }

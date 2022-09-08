@@ -6,6 +6,7 @@ public class WebJobConfig {
 
   public String connectionString;
   public String waitingDocumentQueueName;
+  public String padesBlobContainerName;
 
   public WebJobConfig() throws ConfigurationException {
     connectionString = System.getenv("AzureWebJobsStorage");
@@ -15,6 +16,10 @@ public class WebJobConfig {
     waitingDocumentQueueName = System.getenv("WaitingDocumentQueueName");
     if (waitingDocumentQueueName == null) {
       waitingDocumentQueueName = "waiting-for-document";
+    }
+    padesBlobContainerName = System.getenv("PadesBlobContainerName");
+    if (padesBlobContainerName == null) {
+      padesBlobContainerName = "pades-documents";
     }
   }
 }
