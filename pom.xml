@@ -73,6 +73,13 @@
             <version>2.23.4</version>
             <scope>test</scope>
         </dependency>
+
+        <!-- java-digital-sign -->
+        <dependency>
+            <groupId>it.pagopa.dss</groupId>
+            <artifactId>java-digital-sign</artifactId>
+            <version>0.0.1</version>
+        </dependency>
     </dependencies>
 
     <build>
