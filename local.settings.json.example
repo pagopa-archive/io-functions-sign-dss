@@ -3,6 +3,13 @@
   "Values": {
     "AzureWebJobsStorage": "WEBJOB_STORAGE_ACCOUNT_CONNECTION_STRING",
     "FUNCTIONS_WORKER_RUNTIME": "java",
-    "WaitingDocumentQueueName": "QUEUE_STORAGE_NAME_FOR_WAITING_DOCUMENT"
+    "WaitingDocumentQueueName": "QUEUE_STORAGE_NAME_FOR_WAITING_DOCUMENT",
+    "StorageAccountConnectionString": "STORAGE_ACCOUNT_CONNECTION_STRING",
+    "IssuerBlobContainerName": "ISSUER_BLOB_CONTAINER_NAME",
+    "IssuerValidatedBlobContainerName": "ISSUER_VALIDATED_BLOB_CONTAINER_NAME",
+    "BlobStorageTimeoutInSecond": "TIMEOUT_FOR_BLOB_STORAGE_IN_SECOND",
+    "NumberOfRetryDownload": "NUMBER_OF_RETRY_DOWNLOAD_FOR_BLOB_STORAGE",
+    "SignatureFieldId": "FIELD_ID_OF_SIGNATURE_FIELD_IN_PDF",
+    "SignatureFieldTxt": "TEXT_TO_PUT_IN_SIGNATURE_FIELD",
   }
 }

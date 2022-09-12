@@ -25,10 +25,18 @@ jobs:
         cache: maven
 
     - name: Build with Maven
-      run: mvn -B package --file pom.xml
+      run: mvn -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml -B package --file pom.xml
+      env:
+        ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+    - name: Prettier check
+      run: mvn prettier:check
 
     - name: Checkstyle
-      run: mvn -B verify checkstyle:checkstyle
+      run: mvn -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml -B verify checkstyle:checkstyle
+      env:
+        ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     - uses: jwgmeligmeyling/checkstyle-github-action@master
       with:
         path: '**/checkstyle-result.xml'
