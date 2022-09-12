@@ -30,8 +30,15 @@ jobs:
         USER_NAME: ${{ secrets.USER_NAME }}
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
+    - name: Prettier check
+      run: mvn prettier:check
+
     - name: Checkstyle
-      run: mvn -B verify checkstyle:checkstyle
+      run: mvn -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml -B verify checkstyle:checkstyle
+      env:
+        USER_NAME: ${{ secrets.USER_NAME }}
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
     - uses: jwgmeligmeyling/checkstyle-github-action@master
       with:
         path: '**/checkstyle-result.xml'
