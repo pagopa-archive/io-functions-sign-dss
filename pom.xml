@@ -20,14 +20,6 @@
         <plugin.prettier.goal>write</plugin.prettier.goal>
     </properties>
 
-    <repositories>
-        <repository>
-            <id>github</id>
-            <name>PagoPA Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/pagopa/java-digital-sign</url>
-        </repository>
-    </repositories>
-
     <dependencies>
         <dependency>
             <groupId>com.microsoft.azure.functions</groupId>
