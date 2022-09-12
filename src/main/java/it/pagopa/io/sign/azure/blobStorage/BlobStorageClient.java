@@ -27,17 +27,17 @@ import org.apache.commons.codec.digest.DigestUtils;
 
 public class BlobStorageClient {
 
-  static final Duration TIMEOUT = Duration.ofSeconds(10);
-  static final int N_RETRY_DOWNLOAD = 3;
   static final Long BLOCK_SIZE = 100 * 1024 * 1024L; // 100 MB;
 
   private BlobServiceClient serviceClient;
   private BlobContainerClient containerClient;
+  private BlobStorageConfig config;
 
   public BlobStorageClient(String connectionString, String containerName) {
     this.serviceClient =
       new BlobServiceClientBuilder().connectionString(connectionString).buildClient();
     this.containerClient = this.serviceClient.getBlobContainerClient(containerName);
+    this.config = BlobStorageConfig.getInstance();
   }
 
   public BlobProperties downloadBlob(String blobName, Path filePath) {
@@ -46,7 +46,8 @@ public class BlobStorageClient {
       Response<BlobProperties> response = blobClient.downloadToFileWithResponse(
         new BlobDownloadToFileOptions(filePath.toString())
           .setDownloadRetryOptions(
-            new DownloadRetryOptions().setMaxRetryRequests(N_RETRY_DOWNLOAD)
+            new DownloadRetryOptions()
+              .setMaxRetryRequests(this.config.numberOfRetryDownload)
           )
           .setOpenOptions(
             new HashSet<>(
@@ -57,7 +58,7 @@ public class BlobStorageClient {
               )
             )
           ),
-        TIMEOUT,
+        Duration.ofSeconds(this.config.timeout),
         Context.NONE
       );
 
@@ -110,7 +111,7 @@ public class BlobStorageClient {
         .setParallelTransferOptions(parallelTransferOptions)
         .setHeaders(headers)
         .setMetadata(metadata),
-      TIMEOUT,
+      Duration.ofSeconds(this.config.timeout),
       Context.NONE
     );
 

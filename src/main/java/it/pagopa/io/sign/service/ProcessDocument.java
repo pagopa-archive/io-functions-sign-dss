@@ -4,6 +4,7 @@ import com.azure.storage.blob.models.BlobProperties;
 import it.pagopa.dss.SignatureService;
 import it.pagopa.dss.SignatureServiceInterface;
 import it.pagopa.dss.exception.SignatureServiceException;
+import it.pagopa.io.sign.Configuration;
 import it.pagopa.io.sign.azure.blobStorage.BlobStorageClient;
 import it.pagopa.io.sign.azure.blobStorage.BlobStorageConfig;
 import it.pagopa.io.sign.model.Document;
@@ -17,19 +18,18 @@ import javax.naming.ConfigurationException;
 
 public final class ProcessDocument {
 
-  static final String SIGNATURE_FIELD_ID = "Signature1";
-  static final String SIGNATURE_FIELD_TEXT = "Firmato digitalmente con l'app IO";
-
   BlobStorageConfig storageConfig;
   Logger logger;
   SignatureServiceInterface signatureServiceInterface;
   BlobStorageClient issuerContainerClient;
   BlobStorageClient issuerValidatedContainerClient;
+  Configuration configuration;
 
   public ProcessDocument(Logger logger) throws ConfigurationException {
-    this.storageConfig = new BlobStorageConfig();
+    this.storageConfig = BlobStorageConfig.getInstance();
     this.logger = logger;
     this.signatureServiceInterface = SignatureService.getInterface();
+    this.configuration = Configuration.getInstance();
 
     this.issuerContainerClient =
       new BlobStorageClient(
@@ -57,8 +57,8 @@ public final class ProcessDocument {
     this.signatureServiceInterface.generatePadesFile(
         tempFile.toFile(),
         padesOutputStream,
-        SIGNATURE_FIELD_ID,
-        SIGNATURE_FIELD_TEXT
+        this.configuration.signatureFieldId,
+        this.configuration.signatureFieldTxt
       );
     padesOutputStream.close();
     logger.info("PAdES File generated: " + tempPadesFile.toString());

@@ -2,13 +2,13 @@ package it.pagopa.io.sign.azure.blobStorage;
 
 import javax.naming.ConfigurationException;
 
-public class WebJobConfig {
+public final class WebJobConfig {
 
   public String connectionString;
   public String waitingDocumentQueueName;
   public String padesBlobContainerName;
 
-  public WebJobConfig() throws ConfigurationException {
+  private WebJobConfig() throws ConfigurationException {
     connectionString = System.getenv("AzureWebJobsStorage");
     if (connectionString == null) {
       throw new ConfigurationException("AzureWebJobsStorage not set!");
@@ -21,5 +21,22 @@ public class WebJobConfig {
     if (padesBlobContainerName == null) {
       padesBlobContainerName = "pades-documents";
     }
+  }
+
+  private static class WebJobConfigHelper {
+
+    private static final WebJobConfig INSTANCE;
+
+    static {
+      try {
+        INSTANCE = new WebJobConfig();
+      } catch (Exception e) {
+        throw new ExceptionInInitializerError(e);
+      }
+    }
+  }
+
+  public static WebJobConfig getInstance() {
+    return WebJobConfigHelper.INSTANCE;
   }
 }
