@@ -27,7 +27,6 @@ jobs:
     - name: Build with Maven
       run: mvn -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml -B package --file pom.xml
       env:
-        USER_NAME: ${{ github.actor }}
         ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Prettier check
@@ -36,7 +35,6 @@ jobs:
     - name: Checkstyle
       run: mvn -s $GITHUB_WORKSPACE/.github/workflows/maven-settings.xml -B verify checkstyle:checkstyle
       env:
-        USER_NAME: ${{ github.actor }}
         ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - uses: jwgmeligmeyling/checkstyle-github-action@master
